@@ -12,11 +12,10 @@ provider:
   memorySize: 128 #MB
   
 functions:
-  nationwideApi:
+  ecocart:
     handler: build/handler.ecocart
-    events:  
-      - http: ANY /{proxy+}
-      - http: ANY /
+    events:
+       -   httpApi: '*'
     environment: 
       NW_AWS_REGION: us-east-1
       NW_AWS_DYNAMODB_ENDPOINT: http://dynamodb.us-east-1.amazonaws.com
@@ -28,6 +27,11 @@ functions:
       JWT_SECRET: ecocart
       JWT_EXPIRES_IN: 2d
       JWT_COOKIE_EXPIRES: 2
-    
+
+# Exclude files from deployment
+package:
+    patterns:
+        - '!node_modules/**'
+            
 plugins:
   - serverless-offline
