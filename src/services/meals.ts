@@ -1,18 +1,8 @@
 import axios from 'axios';
 import { API_URL_V1 } from "../configs/index";
+import {Meal, Ingredients} from "../interface/meals"
 
-interface Ingredients {
-    ingredient: string
-    measurement: string
-}
-interface Meal {
-    id: number
-    name: string
-    instructions: string
-    thumbUrl: string
-    youtubeUrl: string
-    ingredients: Ingredients[] 
-}
+
 
 // Collect ingredients data
 function ingredients(item: any) {
@@ -49,6 +39,7 @@ const formatData = (meals: any) => {
 export const _getMealsByKey = async(key:string) => {
     const response = await axios.get(`${API_URL_V1}/search.php?s=${key}`)   
     if (response?.status === 200) {
+        console.log(response?.data?.meals);
         return {status: response?.status, data: formatData(response?.data?.meals)};
     } else {
         return {status: response?.status, data: response?.statusText}

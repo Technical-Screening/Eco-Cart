@@ -14,7 +14,7 @@ app.use(cookieParser());
 // PROTECT app from some well-known web vulnerabilities by setting HTTP headers appropriately.
 app.use(helmet())
 
-//Reduce Fingerprinting
+// Reduce Fingerprinting
 app.disable('x-powered-by')
 
 // API route
@@ -23,7 +23,7 @@ app.use('/api', router);
 // custom 404
 app.use((req, res, next) => {
     res.status(404).send("Sorry can't find that!")
-  })
+})
   
 // custom error handler
 app.use((err, req, res, next) => {
@@ -33,3 +33,5 @@ app.use((err, req, res, next) => {
 
 app.listen(port);
 console.log("Server is in port:", port);
+
+export default app;

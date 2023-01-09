@@ -10,3 +10,11 @@ export const JWT_COOKIE_EXPIRES: any = process.env.JWT_COOKIE_EXPIRES;
 
 export const storeUsername = "admin";
 export const storePassword = "password";
+
+export const awsConfig = {
+    "region": process.env.NW_AWS_REGION,
+    "accessKeyId": process.env.NW_AWS_ACCESS_KEY_ID, 
+    "secretAccessKey": process.env.NW_AWS_SECRET_ACCESS_KEY
+  };
+  
+export const DB_TABLE = process.env.DB_TABLE;

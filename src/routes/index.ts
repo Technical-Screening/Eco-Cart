@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import {login} from "../controllers/auth";
-import {getMeals} from "../controllers/meals";
+import {getMeals, addMeal} from "../controllers/meals";
 
 const router: Router = express.Router();
 
@@ -9,6 +9,7 @@ router.post('/login', login);
 
 // MEALS routes
 router.get('/meals', getMeals)
+router.post('/meals', addMeal)
 
 
 export default router;

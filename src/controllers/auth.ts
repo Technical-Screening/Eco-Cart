@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { JWT_COOKIE_EXPIRES, JWT_EXPIRES_IN, JWT_SECRET,
     storeUsername, storePassword
 } from "../configs/index";
