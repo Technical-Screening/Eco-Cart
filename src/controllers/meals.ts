@@ -1,11 +1,8 @@
 import {Request, Response} from "express";
-import {_getMealsByKey} from "./../services/meals";
 import {verifyToken} from './auth';
-import { docClient } from "./../configs/db";
-import { DB_TABLE } from "./../configs/index";
-import { v4 as uuidv4 } from 'uuid';
 import * as yup from "yup";
-import {formatMealData} from '../utils'
+import {formatMealData, setCached} from '../utils'
+import {CreateMeals, GetMealsByName} from '../models/meals'
 
 
 const ingredientsSchema = yup.object({
@@ -13,9 +10,9 @@ const ingredientsSchema = yup.object({
     measurement: yup.string(),
 })
 
-const mealSchema = yup.object({
+const mealSchema = yup.object().shape({
     meal: yup.string().required(),
-    category: yup.string(),
+    category: yup.string().required(),
     instructions: yup.string(),
     thumbUrl: yup.string(),
     youtubeUrl: yup.string(),
@@ -24,25 +21,38 @@ const mealSchema = yup.object({
 
 // GET Meals
 export const getMeals = async(req: Request, res: Response) => {
-    const {key} = req.query;
+    const {skey} = req.query;
     try {
         const hasId = await verifyToken(req.cookies["token"], res);
         if(!hasId) return; 
-        if (!key) res.status(400).json("Bad Request! 'key' query or search key missing.");
+        if (!skey) res.status(400).json("Bad Request! 'key' query or search key missing.");
 
-            const params = {
-            TableName: DB_TABLE,
-            FilterExpression: "sk= :sk AND begins_with(searchName, :meal)",
-            ExpressionAttributeValues: {
-              ":sk": "MEALS#",
-              ":meal": key.toString().toLowerCase(),
-            },
-          };
-          const response = await docClient.scan(params).promise();
+        GetMealsByName(skey, async (err:any, data:any) => {
+            if (err) {
+                return res.status(500).json({err});
+            } else {
+                console.log("contact::add::success" ); 
+                // Set data to Redis
+                setCached(skey, formatMealData(data));
+                return res.status(200).json(JSON.stringify(formatMealData(data)) || "no data");           
+            }
+        });
 
-        if (response) {
-            res.status(200).json(formatMealData(response?.Items) || "no data");
-        }
+        //     const params = {
+        //     TableName: DB_TABLE,
+        //     FilterExpression: "sk= :sk AND begins_with(searchName, :meal)",
+        //     ExpressionAttributeValues: {
+        //       ":sk": "MEALS#",
+        //       ":meal": key.toString().toLowerCase(),
+        //     },
+        //   };
+        //   const response = await docClient.scan(params).promise();
+
+
+
+        // if (response) {
+        //     res.status(200).json(formatMealData(response?.Items) || "no data");
+        // }
     
     } catch (err) {
         console.log(err);
@@ -55,29 +65,13 @@ export const addMeal = async(req: Request, res: Response) => {
         const hasId = await verifyToken(req.cookies["token"], res);
         if(!hasId) return; 
         const { content } = req.body;
-        console.log(content);
-        await mealSchema.validate(content, { abortEarly: false });
-        console.log("content");
-        const meals = {
-            ...content,
-            "searchName": content?.meal.toLowerCase(),
-            "id": uuidv4(),
-            "sk": 'MEALS#',
-            "createTime": Date.now(),
-            "updateTime": Date.now(),
-        }
-        
-        const params = {
-            TableName: DB_TABLE,
-            Item:  meals
-        };
-
-        docClient.put(params, function (err, data) {
+        // await mealSchema.validate(content, { abortEarly: false });
+        CreateMeals(content, (err, data) => {
             if (err) {
                 return res.status(500).json({err});
             } else {
                 console.log("contact::add::success" ); 
-                return res.status(201).json(JSON.stringify(meals));               
+                return res.status(201).json(JSON.stringify(data));           
             }
         });
     } catch (err) {
