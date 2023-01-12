@@ -25,7 +25,7 @@ functions:
         DB_USER: ${ssm:/ecocart/meals/dev/db/pg/user},
         DB_PASSWORD: ${ssm:/ecocart/meals/dev/db/pg/password},
         DB_HOST: ${ssm:/ecocart/meals/dev/db/pg/password},
-        DB_NAME": postgres,
+        DB_NAME: postgres,
         REDIS_URL: ${ssm:/ecocart/meals/dev/cache/redis/url},
         REDIS_PASS: ${ssm:/ecocart/meals/dev/cache/redis/password}
 
