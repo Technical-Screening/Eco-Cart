@@ -1,7 +1,7 @@
 import express, {Application} from "express";
 const app: Application = express();
 import cookieParser from "cookie-parser";
-const helmet = require('helmet')
+//const helmet = require('helmet')
 import {port} from './configs/index';
 import router from "./routes/index";
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // PROTECT app from some well-known web vulnerabilities by setting HTTP headers appropriately.
-app.use(helmet())
+//app.use(helmet())
 
 // Reduce Fingerprinting
 app.disable('x-powered-by')
