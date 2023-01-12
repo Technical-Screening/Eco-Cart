@@ -15,18 +15,19 @@ functions:
   ecocart:
     handler: build/handler.ecocart
     events:
-       -   httpApi: '*'
+      - http: ANY /{proxy+}
+      - http: ANY /
     environment: 
         PORT: 5000,
         NODE_ENV: developement
         JWT_SECRET: ${ssm:/ecocart/meals/dev/auth/jwt/secret}
         JWT_EXPIRES_IN: 2d
-        JWT_COOKIE_EXPIRES: 2,
-        DB_USER: ${ssm:/ecocart/meals/dev/db/pg/user},
-        DB_PASSWORD: ${ssm:/ecocart/meals/dev/db/pg/password},
-        DB_HOST: ${ssm:/ecocart/meals/dev/db/pg/password},
-        DB_NAME: postgres,
-        REDIS_URL: ${ssm:/ecocart/meals/dev/cache/redis/url},
+        JWT_COOKIE_EXPIRES: 2
+        DB_USER: ${ssm:/ecocart/meals/dev/db/pg/user}
+        DB_PASSWORD: ${ssm:/ecocart/meals/dev/db/pg/password}
+        DB_HOST: ${ssm:/ecocart/meals/dev/db/pg/password}
+        DB_NAME: postgres
+        REDIS_URL: ${ssm:/ecocart/meals/dev/cache/redis/url}
         REDIS_PASS: ${ssm:/ecocart/meals/dev/cache/redis/password}
 
 # Exclude files from deployment
