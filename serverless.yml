@@ -18,7 +18,7 @@ functions:
       - http: ANY /{proxy+}
       - http: ANY /
     environment: 
-        PORT: 5000,
+        PORT: 5000
         NODE_ENV: developement
         JWT_SECRET: ${ssm:/ecocart/meals/dev/auth/jwt/secret}
         JWT_EXPIRES_IN: 2d
