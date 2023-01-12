@@ -1,4 +1,4 @@
-interface Ingredients {
+export interface Ingredients {
     ingredient: string
     measurement: string
 }
