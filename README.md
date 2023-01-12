@@ -1,5 +1,5 @@
 
-# EcoCart - Challenge Part 01 (code)
+# EcoCart Assessment
 
 Senior BE Engineer (NodeJS) Assessment by Boomer
 
@@ -73,4 +73,33 @@ it will set the cookie with token. Now you can access the get meals api.
         ]
     }
 ]
+
+
+#### Create meals
+```http
+  POST /api/meals
+```
+| body             | Type     | Description                                   |
+| :--------------- | :------- | :-------------------------------------------- |
+| 'sample below!'  | `Object` | **Required**                                  |
+
+#### Sample request BODY
+{
+    "content": {
+        "meal": "New Chicken Handi",
+        "instructions": "Take a large pot or wok...",
+        "thumbUrl": "https://www.themealdb.com/images/media/meals/wyxwsp1486979827.jpg",
+        "youtubeUrl": "https://www.youtube.com/watch?v=IO0issT0Rmc",
+        "ingredients": [
+            {
+                "ingredient": "Chicken",
+                "measurement": "1.2 kg"
+            },
+            {
+                "ingredient": "Onion",
+                "measurement": "5 thinly sliced"
+            },
+        ]
+    }
+}
 

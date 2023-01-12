@@ -12,5 +12,4 @@ router.post('/login', login);
 router.get('/meals', isCached, getMeals);
 router.post('/meals', addMeal)
 
-
 export default router;

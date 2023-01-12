@@ -11,10 +11,14 @@ export const JWT_COOKIE_EXPIRES: any = process.env.JWT_COOKIE_EXPIRES;
 export const storeUsername = "admin";
 export const storePassword = "password";
 
-export const awsConfig = {
-    "region": process.env.NW_AWS_REGION,
-    "accessKeyId": process.env.NW_AWS_ACCESS_KEY_ID, 
-    "secretAccessKey": process.env.NW_AWS_SECRET_ACCESS_KEY
-  };
+export const DBConfig = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: 5432,
+    database: process.env.DB_NAME
+};
   
 export const DB_TABLE = process.env.DB_TABLE;
+export const REDIS_URL = process.env.REDIS_URL;
+export const REDIS_PASS = process.env.REDIS_PASS;

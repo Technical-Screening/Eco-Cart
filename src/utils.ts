@@ -1,12 +1,13 @@
 import { Response, Request, NextFunction } from 'express';
-import {MealDto} from "./Dtos/mealsDto";
+import {REDIS_URL, REDIS_PASS} from "./configs/index"
+import {Meal} from "./Interface/meals";
 import * as redis from 'redis';
 
-const redisClient = redis.createClient({url: process.env.REDIS_URL, password: process.env.REDIS_PASS});
+const redisClient = redis.createClient({url: REDIS_URL, password: REDIS_PASS});
 
 // Format data
 export const formatMealData = (meals: any) => {
-    const meal: MealDto =  meals?.map((item: any) => (
+    const meal: Meal =  meals?.map((item: any) => (
          {
             id: item?.id,
             name: item?.meal,
@@ -31,7 +32,7 @@ export const isCached = async (req: Request, res: Response, next: NextFunction) 
             console.log("we Found it in Redis 🟢");
             return res.status(200).json(cacheResults || "no data");
         } else {
-            console.log("User Not Found 🔴 ");
+            console.log("User Not Found 🔴");
             // go To ⏭️ function or middleware
             next();
         }

@@ -1,23 +1,8 @@
 import {Request, Response} from "express";
 import {verifyToken} from './auth';
-import * as yup from "yup";
 import {formatMealData, setCached, deletionKeysByKey} from '../utils'
 import {CreateMeals, GetMealsByName} from '../models/meals'
 
-
-const ingredientsSchema = yup.object({
-    ingredient: yup.string(),
-    measurement: yup.string(),
-})
-
-const mealSchema = yup.object().shape({
-    meal: yup.string().required(),
-    category: yup.string().required(),
-    instructions: yup.string(),
-    thumbUrl: yup.string(),
-    youtubeUrl: yup.string(),
-    ingredients: yup.array().of(ingredientsSchema)
-});
 
 // GET Meals
 export const getMeals = async(req: Request, res: Response) => {
@@ -49,8 +34,9 @@ export const addMeal = async(req: Request, res: Response) => {
         const hasId = await verifyToken(req.cookies["token"], res);
         if(!hasId) return; 
         const { content } = req.body;
-        // await mealSchema.validate(content, { abortEarly: false })
+        // clear the cache for the meal name
         deletionKeysByKey(content.meal);
+        
         CreateMeals(content, (err, data) => {
             if (err) {
                 return res.status(500).json({err});
