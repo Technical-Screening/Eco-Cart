@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {verifyToken} from './auth';
 import * as yup from "yup";
-import {formatMealData, setCached} from '../utils'
+import {formatMealData, setCached, deletionKeysByKey} from '../utils'
 import {CreateMeals, GetMealsByName} from '../models/meals'
 
 
@@ -37,22 +37,6 @@ export const getMeals = async(req: Request, res: Response) => {
                 return res.status(200).json(JSON.stringify(formatMealData(data)) || "no data");           
             }
         });
-
-        //     const params = {
-        //     TableName: DB_TABLE,
-        //     FilterExpression: "sk= :sk AND begins_with(searchName, :meal)",
-        //     ExpressionAttributeValues: {
-        //       ":sk": "MEALS#",
-        //       ":meal": key.toString().toLowerCase(),
-        //     },
-        //   };
-        //   const response = await docClient.scan(params).promise();
-
-
-
-        // if (response) {
-        //     res.status(200).json(formatMealData(response?.Items) || "no data");
-        // }
     
     } catch (err) {
         console.log(err);
@@ -65,7 +49,8 @@ export const addMeal = async(req: Request, res: Response) => {
         const hasId = await verifyToken(req.cookies["token"], res);
         if(!hasId) return; 
         const { content } = req.body;
-        // await mealSchema.validate(content, { abortEarly: false });
+        // await mealSchema.validate(content, { abortEarly: false })
+        deletionKeysByKey(content.meal);
         CreateMeals(content, (err, data) => {
             if (err) {
                 return res.status(500).json({err});

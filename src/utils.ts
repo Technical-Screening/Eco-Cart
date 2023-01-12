@@ -47,3 +47,11 @@ export const setCached = async (skey: any, data:any) => {
   redisClient.set(skey, JSON.stringify(data)); 
 };
   
+// Get data from Redis
+export const deletionKeysByKey = async (skey: any) => {
+    await redisClient.connect().catch(error => {})
+    const skeys = skey.split(" ")
+    console.log(skeys);
+    redisClient.del(skeys);
+};
+    
