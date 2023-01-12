@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
 import {REDIS_URL, REDIS_PASS} from "./configs/index"
-import {Meal} from "./Interface/meals";
+import {Meal} from "./interface/meals";
 import * as redis from 'redis';
 
 const redisClient = redis.createClient({url: REDIS_URL, password: REDIS_PASS});
