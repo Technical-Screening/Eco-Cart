@@ -29,11 +29,6 @@ functions:
         DB_NAME: postgres
         REDIS_URL: ${ssm:/ecocart/meals/dev/cache/redis/url}
         REDIS_PASS: ${ssm:/ecocart/meals/dev/cache/redis/password}
-
-# Exclude files from deployment
-package:
-    patterns:
-        - '!node_modules/**'
-            
+          
 plugins:
   - serverless-offline
